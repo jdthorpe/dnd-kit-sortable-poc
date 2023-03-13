@@ -50,7 +50,7 @@ const App = () => {
         setPalletteItems(palletteItems.filter(item => item.id !== active.id));
       }
     } else if (over.id === "current") {
-      setPickerColor(palletteItems.find(item => item.id === active.id)?.color || "#ddd");
+      getItem(active.id)?.color && setPickerColor(getItem(active.id)?.color);
     } else if (over.id === "favorite") {
       getItem(active.id)?.color && setFavoriteColor(getItem(active.id)?.color);
     }
