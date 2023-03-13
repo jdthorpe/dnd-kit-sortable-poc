@@ -21,9 +21,9 @@ interface Props {
   width?: string;
 }
 
-export const Pallet: FC<Props> = ({ items, width }) => {
+export const ColorPallette: FC<Props> = ({ items, width }) => {
 
-  const { setNodeRef } = useDroppable({ id: "pallet", })
+  const { setNodeRef } = useDroppable({ id: "pallette", })
 
   return <SortableContext
     items={items.map((item) => item.id)}

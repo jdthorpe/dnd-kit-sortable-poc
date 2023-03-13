@@ -13,7 +13,7 @@ import { DropZone } from './components/drop-zone';
 
 // pretty things
 import { Row, Col, Item } from './components/grid-components';
-import { Pallet } from './components/color-pallette';
+import { ColorPallette } from './components/color-pallette';
 import { Trash } from './components/trash';
 import { ColorSquare } from './components/color';
 
@@ -45,7 +45,6 @@ const App = () => {
       return;
     }
 
-    console.log("overid", over.id, "activeid", active.id, "activeItemOrigin", activeItemOrigin)
     if (over.id === "trash") {
       if (palletteItems.find(item => item.id === active.id)) {
         setPalletteItems(palletteItems.filter(item => item.id !== active.id));
@@ -53,7 +52,6 @@ const App = () => {
     } else if (over.id === "current") {
       setPickerColor(palletteItems.find(item => item.id === active.id)?.color || "#ddd");
     } else if (over.id === "favorite") {
-      console.log("vavorite", getItem(active.id))
       getItem(active.id)?.color && setFavoriteColor(getItem(active.id)?.color);
     }
     setActiveItem(null);
@@ -79,7 +77,7 @@ const App = () => {
     }
 
     if ((over.id === "favorite" || over.id === "current") && activeItemOrigin !== null) {
-      // we're not dragging over the pallet, so we may need to remove the item from the pallet
+      // we're not dragging over the pallette, so we may need to remove the item from the pallette
       const active_indx = palletteItems.findIndex(x => x.id === active.id);
       if (active_indx === -1) return;
       setPalletteItems(palletteItems.filter(x => x.id !== active.id))
@@ -95,7 +93,7 @@ const App = () => {
       if (active_indx === over_indx) return;
       setPalletteItems(arrayMove(palletteItems, active_indx, over_indx))
     }
-    else if (over.id === "pallet") {
+    else if (over.id === "pallette") {
       if (palletteItems.findIndex(x => x.id === active.id) === -1) {
         if (active.id === favoriteId) {
           setPalletteItems([...palletteItems, { id: favoriteId, color: favoriteColor }]);
@@ -125,6 +123,15 @@ const App = () => {
       collisionDetection={rectIntersection}
     >
 
+      <div>
+        <ul>
+          <li>Use the Color picker to choose a color</li>
+          <li>Drag the picker or favorite color to the pallette to add it to the pallette</li>
+          <li>Drag a color from the pallette to the picker, favorite, or trash </li>
+          <li>The Chosen color, Favorite color, and Trash elements are implemented using the @dnd-kit/core</li>
+          <li>The pallette is implemented using the @dnd-kit/sortable presets</li>
+        </ul>
+      </div>
       <Row>
 
         <Col >
@@ -133,7 +140,7 @@ const App = () => {
 
         <Col >
           <Item >
-            <p>Chosen Picker</p>
+            <p>Chosen Color</p>
             <DropZone id="current">
               <DraggableItem color={pickerColor} id={pickerId} />
             </DropZone>
@@ -149,8 +156,8 @@ const App = () => {
         </Col>
 
         <Col >
-          <p>Color Pallet</p>
-          <Pallet items={palletteItems} />
+          <p>Color Pallette</p>
+          <ColorPallette items={palletteItems} />
         </Col>
 
       </Row>
